@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>xx</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .header {
+            height: 40px;
+            background: rgba(206, 62, 61, 1);
+        }
+        .item {
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px dashed #333
+        }
+        .main {
+            position: absolute;
+            top: 40px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+        }
+        .fixed1 {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="header"></div>
+<div class="main" id="main">
+    <div class="wrapper"></div>
+</div>
+<div class="switch">
+    <label>
+        <input type="checkbox" name="status"/>
+    </label>
+</div>
+    <script type="text/javascript">
+        function Render () {
+            var main = document.getElementById('main')
+            var wrapper = main.getElementsByClassName('wrapper')[0]
+            for (var i = 0; i < 100; i++) {
+                var item = document.createElement('div');
+                item.setAttribute('class', 'item');
+                item.innerHTML = 'xxxxx' + i;
+                if (i === 20) {
+                    item.setAttribute('class', 'fixed1')
+                }
+                wrapper.appendChild(item)
+            }
+
+        }
+        Render()
+        var main = document.getElementById('main')
+        var wrapper = main.getElementsByClassName('wrapper')[0]
+        main.addEventListener('touchstart', function () {
+            console.log(this.scrollTop)
+        })
+        main.addEventListener('touchmove', function () {
+            console.log(this.scrollTop)
+            main.addEventListener('touchend', function () {
+                moveEnd()
+            })
+        })
+
+        var dist = 0;
+        function moveEnd () {
+            requestFram = requestAnimationFrame (function () {
+                wrapper.style.transform = 'translate3d(0, '+dist+'px, 0)'
+                console.log(wrapper.clientHeight + dist)
+                if (wrapper.clientHeight + dist <= main.clientHeight) {
+                    cancelAnimationFrame(requestFram)
+                } else {
+                    dist--
+                    moveEnd()
+                }
+                // if (wrapper.offsetTop)
+            })
+        }
+    </script>
+</body>
+</html>
